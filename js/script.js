@@ -9,6 +9,7 @@
     toggleArea: document.getElementById('toggleArea'),
     toggleQty: document.getElementById('toggleQty'),
     togglePrice: document.getElementById('togglePrice'),
+    clientName: document.getElementById('clientName'),
   };
 
   function formatCurrency(v) {
@@ -101,9 +102,13 @@
     el.style.margin = '0 auto';
     el.style.boxShadow = 'none';
 
+    const clientNameValue = selectors.clientName ? selectors.clientName.value : '';
+    const safeClientName = clientNameValue.trim().replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_');
+    const filename = safeClientName ? `${safeClientName}_Estimate.pdf` : 'Interior_Estimate.pdf';
+
     const opt = {
       margin: 0,
-      filename: `Interior_Estimate.pdf`,
+      filename: filename,
       image: { type: 'jpeg', quality: 1.0 },
       html2canvas: {
         scale: 2,
