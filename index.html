@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Estimate — Interior Quotation</title>
+  <!-- Change --font-family variable to match exact PDF font if you provide the font name/file -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="toolbar" aria-hidden="false">
+    <div class="toolbar-left">
+      <label class="toggle-label"><input type="checkbox" id="toggleArea" checked> Area</label>
+      <label class="toggle-label"><input type="checkbox" id="toggleQty" checked> Qty</label>
+      <label class="toggle-label"><input type="checkbox" id="togglePrice" checked> Price</label>
+    </div>
+    <div class="toolbar-right">
+      <button id="downloadPdf" class="btn primary">⬇️ Download PDF</button>
+    </div>
+  </div>
+
+  <main id="quotation" class="a4-container" role="document" aria-label="Quotation">
+    <div class="sidebar-borders">
+      <div class="line-green"></div>
+      <div class="line-gold"></div>
+    </div>
+    <div class="a4-body">
+      <!-- HEADER -->
+      <header class="q-header">
+        <div class="header-left">
+          <div class="namaste-text" contenteditable="true">Namaste!</div>
+          <div class="subtitle-text" contenteditable="true">THIS IS YOUR INTERIOR ESTIMATE</div>
+        </div>
+        <div class="header-right">
+          <img src="assets/logo.png" class="logo" alt="Sairam Interior Logo">
+        </div>
+      </header>
+
+      <!-- INFO BLOCK -->
+      <section class="info-block">
+        <div class="info-company">
+          <div class="info-name" contenteditable="true">SAIRAM INTERIOR</div>
+          <div class="info-desc" contenteditable="true">ARCHITECTURE & INTERIOR DESIGN TURNKEY SERVICES</div>
+        </div>
+
+        <div class="info-details">
+          <div class="info-row">
+            <label>ESTIMATE NO:</label>
+            <input id="estimateNo" value="SI/IES/007">
+          </div>
+          <div class="info-row">
+            <label>CLIENT NAME:</label>
+            <input id="clientName" value="MR. ABISHIKA JI">
+          </div>
+          <div class="info-row">
+            <label>PROJECT:</label>
+            <input id="projectName" value="INTERIOR ESTIMATE">
+          </div>
+          <div class="info-row">
+            <label>DATE:</label>
+            <input id="estimateDate" value="13.01.2026">
+          </div>
+        </div>
+      </section>
+
+      <!-- ITEMS TABLE -->
+      <section class="items">
+        <table id="itemsTable" class="items-table">
+          <thead>
+            <tr>
+              <th class="col-desc">DESCRIPTION OF SERVICES</th>
+              <th class="col-area">AREA /<br> SFT</th>
+              <th class="col-qty">QTY</th>
+              <th class="col-price">PRICE /<br> UNIT</th>
+              <th class="col-amount">AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody"></tbody>
+        </table>
+
+        <!-- Summary Row for Subtotal in Table -->
+        <div class="table-subtotal">
+          <div class="subtotal-label">SUBTOTAL</div>
+          <div class="subtotal-value" id="subtotal">₹ 10,35,000/-</div>
+        </div>
+
+        <div class="table-actions" data-html2canvas-ignore>
+          <button id="addRowBtn" class="btn-add">+ Add Service Row</button>
+        </div>
+      </section>
+
+      <div class="page-break" data-html2canvas-ignore="false"></div>
+
+      <!-- TERMS AND CONDITIONS -->
+      <section class="terms-section" contenteditable="true">
+        <h3>TERMS AND CONDITIONS</h3>
+        <p>This estimate is for interior work as discussed by the client.</p>
+        <p>This quotation is given based on the client's requirements.</p>
+        <p>Any additional work apart from what is mentioned in the quotation will be chargeable depending on the work
+          per Sft. basis.</p>
+        <p>Site visits are variable depending on site conditions and necessity. A minimum of 5 site visits is assured.
+        </p>
+        <p>19mm & 12mm Gurjan Plywood 710 BWP grade sheet will be used as per the requirement.</p>
+        <p>A 1mm laminate will be used, as per standards, with a 0.8mm fabric sheet as its interior.</p>
+        <p>We will provide laminate books; a choice of 2 colour combinations can be made anywhere in the home.</p>
+
+        <div class="milestones">
+          <h4>Payment Milestones:</h4>
+          <ul>
+            <li>60% advance payment at the time of work order confirmation.</li>
+            <li>30% payment at the time of wooden structure completion.</li>
+            <li>10% payment before handover</li>
+          </ul>
+        </div>
+
+        <div class="tagline">Precision is Design, Passion in Creation</div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="q-footer">
+        <div class="validity" contenteditable="true">****THIS QUOTATION IS VALID FOR 7 DAYS ONLY****</div>
+        <div class="thank-you" contenteditable="true">THANK YOU</div>
+      </footer>
+    </div>
+
+    <!-- action scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
