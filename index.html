@@ -2,138 +2,1167 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Estimate — Interior Quotation</title>
-  <!-- Change --font-family variable to match exact PDF font if you provide the font name/file -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Estimate — Interior Quotation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --page-width: 210mm;
+            --page-height: 297mm;
+            --primary-color: #1a4d2e;
+            --accent-color: #c5a021;
+            --text-main: #333;
+            --text-muted: #666;
+            --font-body: 'Montserrat', sans-serif;
+            --font-script: 'Dancing Script', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        [contenteditable="true"]:hover,
+        input:hover,
+        textarea:hover {
+            background: rgba(26, 77, 46, 0.05);
+            outline: 1px dashed var(--primary-color);
+            border-radius: 2px;
+        }
+
+        @media print {
+
+            [contenteditable="true"]:hover,
+            input:hover,
+            textarea:hover {
+                background: transparent !important;
+                outline: none !important;
+            }
+        }
+
+        /* Toolbar */
+        .toolbar {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            flex-wrap: wrap;
+            max-width: 90%;
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            background: white;
+            font-family: var(--font-body);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn.primary:hover {
+            background: #153d24;
+        }
+
+        .btn.secondary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+        }
+
+        .btn.secondary:hover {
+            background: #a68a1c;
+        }
+
+        /* Main Container */
+        .a4-container {
+            background: #fff;
+            width: var(--page-width);
+            margin: 80px auto 40px;
+            padding: 0;
+            position: relative;
+            box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            font-family: var(--font-body);
+            overflow: hidden;
+        }
+
+        /* Sidebar Borders */
+        .sidebar-borders {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 22px;
+            display: flex;
+            gap: 2px;
+            z-index: 10;
+            pointer-events: none;
+            height: 100%;
+        }
+
+        .line-green {
+            width: 10px;
+            background-color: var(--primary-color);
+        }
+
+        .line-gold {
+            width: 10px;
+            background-color: var(--accent-color);
+        }
+
+        .a4-body {
+            flex: 1;
+            padding: 5mm 20mm 20mm 25mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .namaste-text {
+            font-family: var(--font-script);
+            font-size: 120px;
+            line-height: 0.8;
+            color: #333;
+            margin-bottom: -5px;
+        }
+
+        .subtitle-text {
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 18px;
+            color: #333;
+            text-transform: uppercase;
+            padding-top: 10px;
+            white-space: nowrap;
+        }
+
+        .header-text-container {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 120px;
+        }
+
+        .logo {
+            width: 200px;
+            margin-bottom: 5px;
+        }
+
+        /* Info Block */
+        .info-block {
+            margin-bottom: 30px;
+        }
+
+        .info-company {
+            margin-bottom: 20px;
+        }
+
+        .info-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .info-desc {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .info-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .info-row label {
+            font-weight: 700;
+            width: 130px;
+        }
+
+        .info-row input {
+            border: none;
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--text-main);
+            padding: 0;
+            width: 250px;
+        }
+
+        /* Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table thead {
+            display: table-header-group;
+        }
+
+        .items-table tr {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .items-table thead th {
+            border-top: 1.5px solid #333;
+            border-bottom: 1.5px solid #333;
+            padding: 12px 5px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .col-desc {
+            width: auto;
+            text-align: left;
+        }
+
+        .col-area {
+            width: 80px;
+            text-align: center;
+        }
+
+        .col-qty {
+            width: 60px;
+            text-align: center;
+        }
+
+        .col-price {
+            width: 100px;
+            text-align: center;
+        }
+
+        .col-amount {
+            width: 120px;
+            text-align: right;
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        .col-area input,
+        .col-qty input,
+        .col-price input {
+            text-align: center;
+        }
+
+        .items-table tbody td {
+            padding: 10px 5px;
+            font-size: 13px;
+            vertical-align: top;
+            border-bottom: 1px solid transparent;
+        }
+
+        .items-table .desc,
+        .items-table input {
+            border: none;
+            width: 100%;
+            font-family: var(--font-body);
+            font-size: 13px;
+            outline: none;
+            background: transparent;
+        }
+
+        .items-table .desc {
+            min-width: 250px;
+            min-height: 20px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .items-table .desc:empty:before {
+            content: attr(data-placeholder);
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .table-subtotal {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1.5px solid #333;
+            border-bottom: 1.5px solid #333;
+            padding: 10px 5px;
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Terms */
+        .terms-section {
+            display: block;
+            margin-top: 100px;
+            font-size: 13px;
+            color: #444;
+            position: relative;
+            /* Help renderer treat as unit */
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .unbreakable-block {
+            display: block;
+            width: 100%;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .terms-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #222;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+        }
+
+        .terms-section p {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .milestones {
+            margin-top: 20px;
+        }
+
+        .milestones h4 {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .milestones ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+
+        .milestones li {
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .q-footer {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 40px;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        .validity {
+            font-size: 10px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .thank-you {
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        /* Table Actions */
+        .table-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .btn-add {
+            background: #f8f8f8;
+            border: 1px dashed #ccc;
+            color: #666;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-color);
+            color: white;
+            border-style: solid;
+        }
+
+        /* Row Delete Button */
+        .items-table tr {
+            position: relative;
+        }
+
+        .row-delete {
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .items-table tr:hover .row-delete {
+            opacity: 1;
+        }
+
+        /* Toolbar Toggles */
+        .toggle-label {
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .toggle-label input {
+            cursor: pointer;
+        }
+
+        /* Column Visibility */
+        .items-table.hide-area .col-area {
+            display: none;
+        }
+
+        .items-table.hide-qty .col-qty {
+            display: none;
+        }
+
+        .items-table.hide-price .col-price {
+            display: none;
+        }
+
+        /* Content positioning after page break (Legacy support) */
+        .page-content-start {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        /* Spacing controls */
+        .spacing-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #666;
+            background: white;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .spacing-control input {
+            width: 50px;
+            padding: 2px 4px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            font-size: 11px;
+        }
+
+        /* Print styles */
+        @media print {
+
+            .line-green,
+            .line-gold {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body {
+                background: none;
+            }
+
+            .toolbar,
+            .table-actions,
+            .row-delete,
+            .page-break-controls,
+            .manual-page-break::before,
+            .spacing-control {
+                display: none !important;
+            }
+
+            .manual-page-break {
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .a4-container {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+
+        /* Insert page break indicator */
+        .insert-page-break-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .insert-page-break-btn:hover {
+            background: #a68a1c;
+        }
+
+        /* A4 PAGE BOUNDARY INDICATORS */
+        .page-boundaries {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .page-boundary {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 297mm;
+            border-bottom: 2px dashed rgba(255, 0, 0, 0.4);
+            pointer-events: none;
+        }
+
+        .page-boundary::after {
+            content: 'A4 Page Line ' attr(data-page);
+            position: absolute;
+            right: -100px;
+            bottom: -15px;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            pointer-events: auto;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        .page-boundaries.hidden {
+            display: none;
+        }
+
+        /* Row level page break button */
+        .row-add-break {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            opacity: 0;
+            transition: all 0.2s;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        tr:hover .row-add-break {
+            opacity: 1;
+        }
+
+        .row-add-break:hover {
+            background: #a68a1c;
+            transform: translateX(-50%) scale(1.2);
+        }
+
+        @media print {
+            .page-boundaries {
+                display: none !important;
+            }
+        }
+
+        /* Custom Premium Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .modal-text {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .modal-btn.yes {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .modal-btn.yes:hover {
+            background: #123620;
+            transform: translateY(-2px);
+        }
+
+        .modal-btn.no {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+
+        .modal-btn.no:hover {
+            background: #f8f8f8;
+            border-color: #ccc;
+        }
+
+        .modal-overlay.minimized {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .peek-hint {
+            display: block;
+            margin-top: 15px;
+            font-size: 11px;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="toolbar" aria-hidden="false">
-    <div class="toolbar-left">
-      <label class="toggle-label"><input type="checkbox" id="toggleArea" checked> Area</label>
-      <label class="toggle-label"><input type="checkbox" id="toggleQty" checked> Qty</label>
-      <label class="toggle-label"><input type="checkbox" id="togglePrice" checked> Price</label>
-    </div>
-    <div class="toolbar-right">
-      <button id="downloadPdf" class="btn primary">⬇️ Download PDF</button>
-    </div>
-  </div>
-
-  <main id="quotation" class="a4-container" role="document" aria-label="Quotation">
-    <div class="sidebar-borders">
-      <div class="line-green"></div>
-      <div class="line-gold"></div>
-    </div>
-    <div class="a4-body">
-      <!-- HEADER -->
-      <header class="q-header">
-        <div class="header-text-container">
-          <div class="namaste-text" contenteditable="true">Namaste!</div>
-          <div class="subtitle-text" contenteditable="true">THIS IS YOUR INTERIOR ESTIMATE</div>
+    <div class="toolbar" aria-hidden="false">
+        <div class="toolbar-left">
+            <label class="toggle-label"><input type="checkbox" id="toggleArea" checked> Area</label>
+            <label class="toggle-label"><input type="checkbox" id="toggleQty" checked> Qty</label>
+            <label class="toggle-label"><input type="checkbox" id="togglePrice" checked> Price</label>
+            <label class="toggle-label"><input type="checkbox" id="togglePageBoundaries" checked> 📏 Show A4
+                Borders</label>
         </div>
-        <div class="header-logo-container">
-          <img src="assets/logo.png" class="logo" alt="Sairam Interior Logo">
+        <div class="toolbar-right">
+            <button id="downloadPdf" class="btn primary">⬇️ Download PDF</button>
         </div>
-      </header>
-
-      <!-- INFO BLOCK -->
-      <section class="info-block">
-        <div class="info-company">
-          <div class="info-name" contenteditable="true">SAIRAM INTERIOR</div>
-          <div class="info-desc" contenteditable="true">ARCHITECTURE & INTERIOR DESIGN TURNKEY SERVICES</div>
-        </div>
-
-        <div class="info-details">
-          <div class="info-row">
-            <label>ESTIMATE NO:</label>
-            <input id="estimateNo" value="SI/IES/007">
-          </div>
-          <div class="info-row">
-            <label>CLIENT NAME:</label>
-            <input id="clientName" value="MR. ABISHIKA JI">
-          </div>
-          <div class="info-row">
-            <label>PROJECT:</label>
-            <input id="projectName" value="INTERIOR ESTIMATE">
-          </div>
-          <div class="info-row">
-            <label>DATE:</label>
-            <input id="estimateDate" value="13.01.2026">
-          </div>
-        </div>
-      </section>
-
-      <!-- ITEMS TABLE -->
-      <section class="items">
-        <table id="itemsTable" class="items-table">
-          <thead>
-            <tr>
-              <th class="col-desc">DESCRIPTION OF SERVICES</th>
-              <th class="col-area">AREA /<br> SFT</th>
-              <th class="col-qty">QTY</th>
-              <th class="col-price">PRICE /<br> UNIT</th>
-              <th class="col-amount">AMOUNT</th>
-            </tr>
-          </thead>
-          <tbody id="itemsBody"></tbody>
-        </table>
-
-        <!-- Summary Row for Subtotal in Table -->
-        <div class="table-subtotal">
-          <div class="subtotal-label">SUBTOTAL</div>
-          <div class="subtotal-value" id="subtotal">₹ 10,35,000/-</div>
-        </div>
-
-        <div class="table-actions" data-html2canvas-ignore>
-          <button id="addRowBtn" class="btn-add">+ Add Service Row</button>
-        </div>
-      </section>
-
-      <div class="page-break" data-html2canvas-ignore="false"></div>
-
-      <!-- TERMS AND CONDITIONS -->
-      <section class="terms-section" contenteditable="true">
-        <h3>TERMS AND CONDITIONS</h3>
-        <p>This estimate is for interior work as discussed by the client.</p>
-        <p>This quotation is given based on the client's requirements.</p>
-        <p>Any additional work apart from what is mentioned in the quotation will be chargeable depending on the work
-          per Sft. basis.</p>
-        <p>Site visits are variable depending on site conditions and necessity. A minimum of 5 site visits is assured.
-        </p>
-        <p>19mm & 12mm Gurjan Plywood 710 BWP grade sheet will be used as per the requirement.</p>
-        <p>A 1mm laminate will be used, as per standards, with a 0.8mm fabric sheet as its interior.</p>
-        <p>We will provide laminate books; a choice of 2 colour combinations can be made anywhere in the home.</p>
-
-        <div class="milestones">
-          <h4>Payment Milestones:</h4>
-          <ul>
-            <li>60% advance payment at the time of work order confirmation.</li>
-            <li>30% payment at the time of wooden structure completion.</li>
-            <li>10% payment before handover</li>
-          </ul>
-        </div>
-
-        <div class="tagline">Precision is Design, Passion in Creation</div>
-      </section>
-
-      <!-- FOOTER -->
-      <footer class="q-footer">
-        <div class="validity" contenteditable="true">****THIS QUOTATION IS VALID FOR 7 DAYS ONLY****</div>
-        <div class="thank-you" contenteditable="true">THANK YOU</div>
-      </footer>
     </div>
 
-    <!-- action scripts -->
+    <main id="quotation" class="a4-container" role="document" aria-label="Quotation">
+        <div class="page-boundaries" id="pageBoundaries" data-html2canvas-ignore="true"></div>
+        <div class="sidebar-borders">
+            <div class="line-green"></div>
+            <div class="line-gold"></div>
+        </div>
+        <div class="a4-body">
+            <!-- HEADER -->
+            <header class="q-header">
+                <div class="header-text-container">
+                    <div class="namaste-text" contenteditable="true">Namaste!</div>
+                    <div class="subtitle-text" contenteditable="true">THIS IS YOUR INTERIOR ESTIMATE</div>
+                </div>
+                <div class="header-logo-container">
+                    <img src="assets/logo.png" class="logo" alt="Sairam Interior Logo">
+                </div>
+            </header>
+
+            <!-- INFO BLOCK -->
+            <section class="info-block">
+                <div class="info-company">
+                    <div class="info-name" contenteditable="true">SAIRAM INTERIOR</div>
+                    <div class="info-desc" contenteditable="true">ARCHITECTURE & INTERIOR DESIGN TURNKEY SERVICES</div>
+                </div>
+
+                <div class="info-details">
+                    <div class="info-row">
+                        <label>ESTIMATE NO:</label>
+                        <input id="estimateNo" value="SI/IES/007">
+                    </div>
+                    <div class="info-row">
+                        <label>CLIENT NAME:</label>
+                        <input id="clientName" value="MR. ABISHIKA JI">
+                    </div>
+                    <div class="info-row">
+                        <label>PROJECT:</label>
+                        <input id="projectName" value="INTERIOR ESTIMATE">
+                    </div>
+                    <div class="info-row">
+                        <label>DATE:</label>
+                        <input id="estimateDate" value="13.01.2026">
+                    </div>
+                </div>
+            </section>
+
+            <!-- ITEMS TABLE -->
+            <section class="items" id="itemsSection">
+                <table id="itemsTable" class="items-table">
+                    <thead>
+                        <tr>
+                            <th class="col-desc">DESCRIPTION OF SERVICES</th>
+                            <th class="col-area">AREA /<br> SFT</th>
+                            <th class="col-qty">QTY</th>
+                            <th class="col-price">PRICE /<br> UNIT</th>
+                            <th class="col-amount">AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsBody"></tbody>
+                </table>
+
+                <!-- Summary Row -->
+                <div class="table-subtotal">
+                    <div class="subtotal-label">SUBTOTAL</div>
+                    <div class="subtotal-value" id="subtotal">₹ 0/-</div>
+                </div>
+
+                <div class="table-actions" data-html2canvas-ignore>
+                    <button id="addRowBtn" class="btn-add">+ Add Service Row</button>
+                </div>
+            </section>
+
+            <!-- TERMS, CONDITIONS & FOOTER -->
+            <div class="unbreakable-block">
+                <section class="terms-section" contenteditable="true">
+                    <h3>TERMS AND CONDITIONS</h3>
+                    <p>This estimate is for interior work as discussed by the client.</p>
+                    <p>This quotation is given based on the client's requirements.</p>
+                    <p>Any additional work apart from what is mentioned in the quotation will be chargeable depending on
+                        the
+                        work
+                        per Sft. basis.</p>
+                    <p>Site visits are variable depending on site conditions and necessity. A minimum of 5 site visits
+                        is
+                        assured.
+                    </p>
+                    <p>19mm & 12mm Gurjan Plywood 710 BWP grade sheet will be used as per the requirement.</p>
+                    <p>A 1mm laminate will be used, as per standards, with a 0.8mm fabric sheet as its interior.</p>
+                    <p>We will provide laminate books; a choice of 2 colour combinations can be made anywhere in the
+                        home.
+                    </p>
+
+                    <div class="milestones">
+                        <h4>Payment Milestones:</h4>
+                        <ul>
+                            <li>60% advance payment at the time of work order confirmation.</li>
+                            <li>30% payment at the time of wooden structure completion.</li>
+                            <li>10% payment before handover</li>
+                        </ul>
+                    </div>
+
+                    <div class="tagline">Precision is Design, Passion in Creation</div>
+                </section>
+
+                <!-- FOOTER -->
+                <footer class="q-footer">
+                    <div class="validity" contenteditable="true">****THIS QUOTATION IS VALID FOR 7 DAYS ONLY****</div>
+                    <div class="thank-you" contenteditable="true">THANK YOU</div>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Modal Structure -->
+    <div id="pdfModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-title">PDF Optimization</div>
+            <div id="modalMsg" class="modal-text">Your document is 2 pages long. Do you want to remove the last page?
+                (Useful if the last page is blank)</div>
+            <div class="modal-footer">
+                <button id="modalNo" class="modal-btn no">No, Keep All</button>
+                <button id="modalYes" class="modal-btn yes">Yes, Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-    <script src="js/script.js"></script>
+    <script>
+        (() => {
+            const selectors = {
+                itemsBody: document.getElementById('itemsBody'),
+                itemsSection: document.getElementById('itemsSection'),
+                subtotal: document.getElementById('subtotal'),
+                downloadPdf: document.getElementById('downloadPdf'),
+                addRowBtn: document.getElementById('addRowBtn'),
+                insertPageBreak: document.getElementById('insertPageBreak'),
+                itemsTable: document.getElementById('itemsTable'),
+                toggleArea: document.getElementById('toggleArea'),
+                toggleQty: document.getElementById('toggleQty'),
+                togglePrice: document.getElementById('togglePrice'),
+                clientName: document.getElementById('clientName'),
+            };
+
+            function formatCurrency(v) {
+                return '₹ ' + Number(v || 0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + '/-';
+            }
+
+            function toggleColumn(checkbox, className) {
+                if (checkbox.checked) {
+                    selectors.itemsTable.classList.remove(className);
+                } else {
+                    selectors.itemsTable.classList.add(className);
+                }
+                calculate();
+            }
+
+            if (selectors.toggleArea) selectors.toggleArea.addEventListener('change', () => toggleColumn(selectors.toggleArea, 'hide-area'));
+            if (selectors.toggleQty) selectors.toggleQty.addEventListener('change', () => toggleColumn(selectors.toggleQty, 'hide-qty'));
+            if (selectors.togglePrice) selectors.togglePrice.addEventListener('change', () => toggleColumn(selectors.togglePrice, 'hide-price'));
+
+            function createRow(data = {}) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td style="position: relative;">
+            <button class="row-delete" title="Delete row" data-html2canvas-ignore>✕</button>
+            <div class="desc" contenteditable="true" data-placeholder="Service Description">${data.desc || ''}</div>
+          </td>
+          <td class="col-area"><input class="area" type="number" min="0" value="${data.area || 1}" placeholder="Area"></td>
+          <td class="col-qty"><input class="qty" type="number" min="0" value="${data.qty || 1}" placeholder="Qty"></td>
+          <td class="col-price"><input class="rate" type="number" min="0" value="${data.rate || 1}" placeholder="Rate"></td>
+          <td class="col-amount amount">${formatCurrency(data.amount || 1)}</td>
+        `;
+
+                tr.querySelectorAll('input, .desc').forEach(inp => {
+                    inp.addEventListener('input', () => {
+                        calculate();
+                    });
+                });
+                tr.querySelector('.row-delete').addEventListener('click', () => {
+                    tr.remove();
+                    calculate();
+                });
+
+                return tr;
+            }
+
+            function calculate() {
+                let subtotal = 0;
+                const hideArea = !selectors.toggleArea.checked;
+                const hideQty = !selectors.toggleQty.checked;
+                const hidePrice = !selectors.togglePrice.checked;
+
+                document.querySelectorAll('#itemsBody tr').forEach(row => {
+                    const area = hideArea ? 1 : (parseFloat(row.querySelector('.area').value) || 0);
+                    const qty = hideQty ? 1 : (parseFloat(row.querySelector('.qty').value) || 0);
+                    const rate = hidePrice ? 1 : (parseFloat(row.querySelector('.rate').value) || 0);
+
+                    const amount = (rate === 0 && !hidePrice) ? 0 : (area * qty * rate);
+
+                    row.querySelector('.amount').innerText = formatCurrency(amount);
+                    if (amount > 0) subtotal += amount;
+                });
+
+                selectors.subtotal.innerText = formatCurrency(subtotal);
+            }
+
+            function addRow(data) {
+                selectors.itemsBody.appendChild(createRow(data));
+                calculate();
+            }
+
+            if (selectors.addRowBtn) selectors.addRowBtn.addEventListener('click', () => addRow());
+
+
+
+
+
+            function generatePDF() {
+                const el = document.getElementById('quotation');
+
+                const originalHeight = el.style.height;
+                const originalMinHeight = el.style.minHeight;
+                const originalMargin = el.style.margin;
+                const originalShadow = el.style.boxShadow;
+                const originalWidth = el.style.width;
+
+                const pageHeightMm = 297;
+                // Calculate current height and pad to full pages
+                const rect = el.getBoundingClientRect();
+                const containerWidth = rect.width || 1;
+                const currentHeightPx = el.scrollHeight;
+                const currentHeightMm = (currentHeightPx / containerWidth) * 210;
+                let totalPages = Math.ceil(currentHeightMm / pageHeightMm) || 1;
+
+                // Show custom beautiful modal if more than 1 page
+                if (totalPages > 1) {
+                    const modal = document.getElementById('pdfModal');
+                    const msg = document.getElementById('modalMsg');
+                    const btnYes = document.getElementById('modalYes');
+                    const btnNo = document.getElementById('modalNo');
+
+                    msg.innerHTML = `Your document is <strong>${totalPages} pages</strong> long.<br>Do you want to remove the last page?<br><span class="peek-hint">(Press <strong>ESC</strong> to peek at the document behind this pop-up)</span>`;
+                    modal.classList.add('active');
+                    modal.classList.remove('minimized');
+
+                    // Temporary event listeners
+                    const handleChoice = (shouldRemove) => {
+                        modal.classList.remove('active');
+                        modal.classList.remove('minimized');
+                        window.removeEventListener('keydown', keyHandler);
+                        let finalPages = totalPages;
+                        if (shouldRemove) finalPages -= 1;
+                        proceedToExport(finalPages);
+                        // Clean up listeners
+                        btnYes.onclick = null;
+                        btnNo.onclick = null;
+                    };
+
+                    const keyHandler = (e) => {
+                        if (e.key === 'Escape') {
+                            modal.classList.toggle('minimized');
+                        }
+                    };
+                    window.addEventListener('keydown', keyHandler);
+
+                    btnYes.onclick = () => handleChoice(true);
+                    btnNo.onclick = () => handleChoice(false);
+                } else {
+                    proceedToExport(totalPages);
+                }
+
+                function proceedToExport(finalPages) {
+                    // Subtract a tiny fraction to prevent rounding errors from creating a blank page
+                    const targetHeightMm = (finalPages * pageHeightMm) - 0.2;
+
+                    el.style.height = targetHeightMm + 'mm';
+                    el.style.minHeight = targetHeightMm + 'mm';
+                    el.style.margin = '0 auto';
+                    el.style.boxShadow = 'none';
+                    el.style.width = '210mm';
+
+                    const clientNameValue = selectors.clientName ? selectors.clientName.value : '';
+                    const safeClientName = clientNameValue.trim().replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_');
+                    const filename = safeClientName ? `${safeClientName}_Estimate.pdf` : 'Interior_Estimate.pdf';
+
+                    const opt = {
+                        margin: 0,
+                        filename: filename,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: {
+                            scale: 2,
+                            useCORS: true,
+                            logging: false,
+                            letterRendering: true
+                        },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                        pagebreak: { mode: 'css', after: '.page-break-row', avoid: '.unbreakable-block' }
+                    };
+
+                    calculate();
+
+                    setTimeout(() => {
+                        html2pdf().set(opt).from(el).save()
+                            .then(() => {
+                                el.style.height = originalHeight;
+                                el.style.minHeight = originalMinHeight;
+                                el.style.margin = originalMargin;
+                                el.style.boxShadow = originalShadow;
+                                el.style.width = originalWidth;
+                            })
+                            .catch(e => {
+                                console.error('PDF export failed:', e);
+                                el.style.height = originalHeight;
+                                el.style.minHeight = originalMinHeight;
+                                el.style.margin = originalMargin;
+                                el.style.boxShadow = originalShadow;
+                                el.style.width = originalWidth;
+                            });
+                    }, 500);
+                }
+            }
+
+            if (selectors.downloadPdf) selectors.downloadPdf.addEventListener('click', generatePDF);
+
+            // A4 PAGE BOUNDARY INDICATORS
+            function updatePageBoundaries() {
+                const container = document.getElementById('quotation');
+                const boundariesDiv = document.getElementById('pageBoundaries');
+
+                if (!container || !boundariesDiv) return;
+
+                // Clear existing boundaries
+                boundariesDiv.innerHTML = '';
+
+                // Get container height
+                const containerHeight = container.scrollHeight;
+                const pageHeightPx = container.offsetWidth * (297 / 210); // A4 ratio
+
+                // Calculate number of full pages crossed
+                const numPages = Math.floor(containerHeight / pageHeightPx);
+
+                // Only show a boundary if content actually crosses into the next page
+                for (let i = 1; i <= numPages; i++) {
+                    const boundary = document.createElement('div');
+                    boundary.className = 'page-boundary';
+                    boundary.setAttribute('data-page', i);
+                    boundary.style.top = ((i - 1) * pageHeightPx) + 'px';
+                    boundariesDiv.appendChild(boundary);
+                }
+            }
+
+            // Toggle page boundaries visibility
+            const togglePageBoundaries = document.getElementById('togglePageBoundaries');
+            if (togglePageBoundaries) {
+                togglePageBoundaries.addEventListener('change', (e) => {
+                    const boundariesDiv = document.getElementById('pageBoundaries');
+                    if (boundariesDiv) {
+                        if (e.target.checked) {
+                            boundariesDiv.classList.remove('hidden');
+                        } else {
+                            boundariesDiv.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+
+            // Update boundaries on content change
+            const observer = new MutationObserver(() => {
+                updatePageBoundaries();
+            });
+
+            const quotationBody = document.querySelector('.a4-body');
+            if (quotationBody) {
+                observer.observe(quotationBody, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
+            }
+
+            // Update on window resize
+            window.addEventListener('resize', updatePageBoundaries);
+
+            // Initialize
+            calculate();
+            updatePageBoundaries();
+        })();
+    </script>
 </body>
 
 </html>
